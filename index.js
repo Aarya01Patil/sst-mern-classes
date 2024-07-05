@@ -16,6 +16,41 @@ mongoose
     console.log("Failed", err);
   });
 
+// ProductSchema
+
+const productSchema = new mongoose.Schema({
+  product_name: {
+    type: String,
+    required: true,
+  },
+  product_price: {
+    type: String,
+    required: true,
+  },
+  isInStock: {
+    type: Boolean,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+});
+
+const productModel = mongoose.model("products", productSchema);
+
+// Create
+
+app.post("/api/products", async (req, res) => {
+   await productModel.create({
+    product_name: req.body.product_name,
+    product_price: req.body.product_price,
+    isInStock: req.body.isInStock,
+    category: req.body.category,
+  });
+  return res.status(201).json({ message: "Product Created" });
+});
+
 app.listen(8086, () => {
   console.log("Server sarted at port 8086");
 });

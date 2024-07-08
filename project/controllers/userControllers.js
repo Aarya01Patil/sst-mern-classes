@@ -1,10 +1,9 @@
 const userModel = require('../models/user');
 
-// Create a new user
 exports.createUser = async (req, res) => { 
     try {
         const newUser = await userModel.create({
-            name: req.body.name,
+            user_name: req.body.user_name,
             email: req.body.email,
             password: req.body.password,
             created_At: req.body.created,
@@ -16,7 +15,6 @@ exports.createUser = async (req, res) => {
     }
 }
 
-// Get all users
 exports.getAllUsers = async (req, res) => {
     try {
         const allUsers = await userModel.find();
@@ -27,7 +25,6 @@ exports.getAllUsers = async (req, res) => {
     }
 }
 
-// Get user by ID
 exports.getUserByID = async (req, res) => {
     try {
         const user = await userModel.findById(req.params.id);
@@ -41,7 +38,6 @@ exports.getUserByID = async (req, res) => {
     }
 }
 
-// Update user by ID
 exports.updateUser = async (req, res) => {
     try {
         const updatedUser = await userModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -55,7 +51,6 @@ exports.updateUser = async (req, res) => {
     }
 }
 
-// Delete user by ID
 exports.deleteUser = async (req, res) => {
     try {
         const deletedUser = await userModel.findByIdAndDelete(req.params.id);
@@ -69,25 +64,3 @@ exports.deleteUser = async (req, res) => {
     }
 }
 
-// Login user
-exports.loginUser = async (req, res) => {
-    try {
-        const user = await userModel.findOne({ email: req.body.email });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        if (user.password !== req.body.password) {
-            return res.status(401).json({ message: "Invalid Credentials" });
-        }
-        return res.json({ message: "Login Successful" });
-    } catch (err) {
-        console.error("Error logging in user:", err);
-        return res.status(500).json({ message: "Login failed", error: err.message });
-    }
-}
-
-// Logout user (example function)
-exports.logoutUser = async (req, res) => {
-    // Perform logout operations here if needed
-    return res.json({ message: "Logout Successful" });
-}
